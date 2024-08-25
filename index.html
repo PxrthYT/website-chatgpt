@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech-to-Text AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #6200ea;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-weight: 600;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-area, .output-area {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+h2 {
+    margin-top: 0;
+    font-weight: 400;
+    color: #6200ea;
+}
+
+button {
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #3700b3;
+}
+
+#transcription {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 20px;
+    min-height: 100px;
+    border: 1px solid #ddd;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #6200ea;
+    color: #fff;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Speech-to-Text AI</h1>
+    </header>
+
+    <main>
+        <section class="input-area">
+            <h2>Record Your Speech</h2>
+            <button id="start">Start Recording</button>
+            <button id="Stop">Stop Recording</button>
+        </section>
+
+        <section class="output-area">
+            <h2>Converstation...</h2>
+            <div id="transcription">
+                <p>Question: </p>
+                <p>Answer: </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>©Parth Bindra</p>
+    </footer>
+
+    <script>
+        async function postData(url = "", data = {}) { 
+        const response = await fetch(url, {
+          method: "POST", 
+          mode: "cors", 
+          cache: "no-cache", 
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          redirect: "follow", 
+          referrerPolicy: "no-referrer", 
+          body: JSON.stringify(data), 
+        });
+        return response.json(); 
+      }
+      const populateUsingGpt = (input)=>{  
+        postData("/api", { input: input }).then((data) => {
+          document.querySelector(".chats").innerHTML = document.querySelector(".chats").innerHTML + `<div>Question: ${input}</div>
+            <div>Answer: ${data.message}</div> 
+        <hr>`
+          });
+      }
+      let speech = true;
+      let globalTranscript;
+      window.SpeechRecognition = window.SpeechRecognition
+        || window.webkitSpeechRecognition;
+  
+      const recognition = new SpeechRecognition();
+      recognition.interimResults = true;
+  
+      recognition.addEventListener('result', e => {
+        const transcript = Array.from(e.results)
+          .map(result => result[0])
+          .map(result => result.transcript)
+          .join('')
+        
+        globalTranscript = transcript 
+      });
+   
+      start.addEventListener("click", () => {
+        if (speech == true) {
+              recognition.start(); 
+              recognition.addEventListener('end', ()=>{
+          console.log(globalTranscript)
+          if(globalTranscript !== ""){
+            populateUsingGpt(globalTranscript)
+          }
+          globalTranscript = ""
+                }); 
+        }
+      })
+  
+    </script>
+</body>
+</html>

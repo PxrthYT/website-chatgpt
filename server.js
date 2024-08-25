@@ -6,7 +6,7 @@ const OpenAI = require('openai');
 const messages = []
 
 const openai = new OpenAI({
-  apiKey: "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", // defaults to process.env["OPENAI_API_KEY"]
+  apiKey: "hbas", // defaults to process.env["OPENAI_API_KEY"]
 });
 async function main(input) {
     messages.push({ role: 'user', content: input })

@@ -1,6 +1,6 @@
-# ChatGPT Integration Web Application
+# ChatGPT Integration Voice Web Application
 
-A simple web application that integrates with OpenAI's GPT-3.5-turbo model to provide a chat interface where users can input prompts and receive AI-generated responses.
+A simple web application that integrates with OpenAI's GPT-3.5-turbo model to provide a chat interface where users can input using voice prompts and receive AI-generated responses.
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -15,7 +15,7 @@ A simple web application that integrates with OpenAI's GPT-3.5-turbo model to pr
 
 ## Introduction
 
-This project is a web application built using Node.js and Express that allows users to interact with OpenAI's GPT-3.5-turbo model. It takes user input through an interface, sends it to the OpenAI API, and returns the AI's response.
+This project is a web application built using Node.js and Express that allows users to interact with OpenAI's GPT-3.5-turbo model. It takes user input voice through an interface, sends it to the OpenAI API, and returns the AI's response.
 
 ## Features
 
